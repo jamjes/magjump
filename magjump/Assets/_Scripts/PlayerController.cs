@@ -4,36 +4,35 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float horizontal;
-    private float speed = 7f;
-    private float jumpingPower = 12f;
-    private bool isFacingRight = true;
+    [SerializeField] private float _speed = 7f, _jumpForce = 12f;
+    private float _horizontalInput;
+    private bool _isFacingRight = true;
 
-    [SerializeField] private Rigidbody2D rb;    
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Rigidbody2D _rigidBody;    
+    [SerializeField] private Transform _feetPosition;
+    [SerializeField] private LayerMask _groundLayer;
 
     private void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
+        _horizontalInput = Input.GetAxisRaw("Horizontal");
         Flip();
 
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _jumpForce);
         }
     }
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        _rigidBody.velocity = new Vector2(_horizontalInput * _speed, _rigidBody.velocity.y);
     }
 
     private void Flip()
     {
-        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        if (_isFacingRight && _horizontalInput < 0f || !_isFacingRight && _horizontalInput > 0f)
         {
-            isFacingRight = !isFacingRight;
+            _isFacingRight = !_isFacingRight;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
@@ -42,6 +41,6 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        return Physics2D.OverlapCircle(_feetPosition.position, 0.2f, _groundLayer);
     }
 }
