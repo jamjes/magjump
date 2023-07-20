@@ -7,7 +7,7 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] private GameObject[] Path;
     private int _currentNodeIndex = 0;
 
-    [SerializeField] private float _speed = 2f;
+    [SerializeField] private float _speed = 6f;
     
     private void Update()
     {
