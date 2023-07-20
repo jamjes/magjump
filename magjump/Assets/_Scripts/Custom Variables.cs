@@ -5,7 +5,8 @@ using UnityEngine;
 namespace CustomVars {
     public enum Polarity 
     {
-        North = 1,
+        Neutral,
+        North,
         South
     };
 }

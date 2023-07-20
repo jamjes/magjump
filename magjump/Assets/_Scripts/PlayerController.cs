@@ -1,46 +1,106 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomVars;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float _speed = 7f, _jumpForce = 12f;
-    private float _horizontalInput;
-    private bool _isFacingRight = true;
-
+    #region Variables
+    [Header("Componants")]
     [SerializeField] private Rigidbody2D _rigidBody;    
     [SerializeField] private Transform _feetPosition;
     [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private BoxCollider2D _boxCollider;
+
+    [Header("Physics Settings")]
+    [SerializeField] private float _speed = 7f;
+    [SerializeField] private float _magneticForce = 12f;
+    public Polarity _targetPolarity;
+    
+    
+    [Header("Collision")]
+    [SerializeField] private float _extraDistance = 2f;
+    private float _horizontalInput;
+    private bool _isFacingRight = true;
+    private Vector2 _direction;
+
+    #endregion
 
     private void Update()
     {
-        _horizontalInput = Input.GetAxisRaw("Horizontal");
-        Flip();
 
-        if (Input.GetButtonDown("Jump") && isGrounded())
+        if (_isFacingRight && _horizontalInput < 0f || !_isFacingRight && _horizontalInput > 0f)
+        {  
+            Flip();
+        }
+
+        IsGrounded();
+
+        float xDirection = Input.GetAxisRaw("Horizontal");
+        float yDirection = Input.GetAxisRaw("Vertical");
+        _direction = new Vector2(xDirection, yDirection);
+        DrawDebugRays(_direction);
+    }
+
+    private void DrawDebugRays(Vector2 direction)
+    {
+        switch(direction)
         {
-            _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _jumpForce);
+            case Vector2 v when v.Equals(Vector2.up):
+                Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x, 0), Vector2.up * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
+
+                Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x, 0), Vector2.up * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
+
+                Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x, _boxCollider.bounds.extents.y + _extraDistance), Vector2.left * (_boxCollider.bounds.extents.x + 0.5f), Color.blue);
+                break;
+            
+            case Vector2 v when v.Equals(Vector2.right):
+                Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x - 0.5f, 0.5f), Vector2.right * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
+
+                Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x - 0.5f, -0.5f), Vector2.right * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
+
+                Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x + _extraDistance, 0.5f), Vector2.down * (_boxCollider.bounds.extents.y + 0.5f), Color.blue);
+                break;
+            
+            case Vector2 v when v.Equals(Vector2.down):
+                Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x, 0), Vector2.down * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
+
+                Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x, 0), Vector2.down * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
+
+                Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x, _boxCollider.bounds.extents.y + _extraDistance), Vector2.right * (_boxCollider.bounds.extents.x + 0.5f), Color.blue);
+                break;
+            
+            case Vector2 v when v.Equals(Vector2.left):
+                Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x - 0.5f, -0.5f), Vector2.left * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
+
+                Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x - 0.5f, 0.5f), Vector2.left * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
+
+                Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x + _extraDistance, 0.5f), Vector2.up * (_boxCollider.bounds.extents.y + 0.5f), Color.blue);
+                break;
         }
     }
 
-    private void FixedUpdate()
+    private bool IsGrounded()
     {
-        _rigidBody.velocity = new Vector2(_horizontalInput * _speed, _rigidBody.velocity.y);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, _direction, _extraDistance, _groundLayer);
+
+        if (raycastHit.collider != null)
+        {
+            _targetPolarity = raycastHit.collider.gameObject.GetComponent<Platform>().ReturnPolarity();
+        }
+        else
+        {
+            _targetPolarity = Polarity.Neutral;
+        }
+
+        return raycastHit.collider != null;
     }
 
     private void Flip()
     {
-        if (_isFacingRight && _horizontalInput < 0f || !_isFacingRight && _horizontalInput > 0f)
-        {
-            _isFacingRight = !_isFacingRight;
-            Vector3 localScale = transform.localScale;
-            localScale.x *= -1f;
-            transform.localScale = localScale;
-        }
-    }
-
-    private bool isGrounded()
-    {
-        return Physics2D.OverlapCircle(_feetPosition.position, 0.2f, _groundLayer);
+        _isFacingRight = !_isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
     }
 }
