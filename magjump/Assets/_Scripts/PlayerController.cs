@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private float _horizontalInput;
     private bool _isFacingRight = true;
     private Vector2 _direction;
+    private Platform _targetPlatform;
 
     #endregion
 
@@ -34,7 +35,19 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
 
-        IsGrounded();
+        MagnetismCheck();
+
+        if (_targetPolarity == Polarity.North && Input.GetButton("NorthMagnet") || _targetPolarity == Polarity.South && Input.GetButtonDown("SouthMagnet"))
+        {
+            _rigidBody.gravityScale = 0;
+            _rigidBody.velocity = _direction * (_speed);
+
+        }
+
+        if (Input.GetButtonUp("NorthMagnet") || Input.GetButtonUp("SouthMagnet"))
+        {
+            _rigidBody.gravityScale = 1;
+        }
 
         float xDirection = Input.GetAxisRaw("Horizontal");
         float yDirection = Input.GetAxisRaw("Vertical");
@@ -80,16 +93,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool IsGrounded()
+    private bool MagnetismCheck()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, _direction, _extraDistance, _groundLayer);
 
         if (raycastHit.collider != null)
         {
-            _targetPolarity = raycastHit.collider.gameObject.GetComponent<Platform>().ReturnPolarity();
+            _targetPlatform = raycastHit.collider.GetComponent<Platform>();
+            _targetPolarity = _targetPlatform.ReturnPolarity();
         }
         else
         {
+            _targetPlatform = null;
             _targetPolarity = Polarity.Neutral;
         }
 
