@@ -37,11 +37,18 @@ public class PlayerController : MonoBehaviour
 
         MagnetismCheck();
 
-        if (_targetPolarity == Polarity.North && Input.GetButton("NorthMagnet") || _targetPolarity == Polarity.South && Input.GetButtonDown("SouthMagnet"))
+        if (_targetPolarity == Polarity.North && Input.GetButton("NorthMagnet") || _targetPolarity == Polarity.South && Input.GetButton("SouthMagnet"))
         {
-            _rigidBody.gravityScale = 0;
-            _rigidBody.velocity = _direction * (_speed);
+            if (_rigidBody.gravityScale != 0) _rigidBody.gravityScale = 0;
+            _rigidBody.velocity = _direction * _speed;
 
+        }
+
+        if (_targetPolarity == Polarity.North && Input.GetButtonDown("SouthMagnet") || _targetPolarity == Polarity.South && Input.GetButtonDown("NorthMagnet"))
+        {
+            if (_rigidBody.gravityScale != 1) _rigidBody.gravityScale = 1;
+            _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, (_direction.y * -1 * _magneticForce));
+            
         }
 
         if (Input.GetButtonUp("NorthMagnet") || Input.GetButtonUp("SouthMagnet"))

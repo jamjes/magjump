@@ -8,5 +8,5 @@ namespace CustomVars {
         Neutral,
         North,
         South
-    };
+    }; //Allows gameobjects to possess a magnetic charge
 }

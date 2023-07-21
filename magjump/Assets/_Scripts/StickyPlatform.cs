@@ -8,7 +8,7 @@ public class StickyPlatform : MonoBehaviour
     {
         if (col.gameObject.name == "Player")
         {
-            col.gameObject.transform.SetParent(transform);
+            col.gameObject.transform.SetParent(transform); //Allows player to move with platform
         }
     }
 
@@ -16,7 +16,7 @@ public class StickyPlatform : MonoBehaviour
     {
         if (col.gameObject.name == "Player")
         {
-            col.gameObject.transform.SetParent(null);
+            col.gameObject.transform.SetParent(null); //Stops player moving with platform
         }
     }
 }

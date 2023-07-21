@@ -549,7 +549,7 @@ MonoBehaviour:
     m_Bits: 64
   _boxCollider: {fileID: 139654753}
   _speed: 7
-  _magneticForce: 12
+  _magneticForce: 15
   _targetPolarity: 0
   _extraDistance: 2
 --- !u!1 &338602526
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ef0f6c117f8c7438482ef1c70d74b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _charge: 0
+  _charge: 2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,7 +1335,7 @@ MonoBehaviour:
   Path:
   - {fileID: 1740967141}
   - {fileID: 1496849674}
-  _speed: 2
+  _speed: 5
 --- !u!114 &2045812975
 MonoBehaviour:
   m_ObjectHideFlags: 0

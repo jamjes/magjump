@@ -9,11 +9,11 @@ public class LoadThisScene : MonoBehaviour
 
     public void LoadScene()
     {
-        SceneManager.LoadScene(SceneName);
+        SceneManager.LoadScene(SceneName); //Load this scene when function is called
     }
 
     public void Exit()
     {
-        Application.Quit();
+        Application.Quit(); //Exit application when function is called
     }
 }
