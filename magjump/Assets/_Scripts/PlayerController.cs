@@ -17,13 +17,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _magneticForce = 12f;
     public Polarity _targetPolarity;
     
-    
     [Header("Collision")]
     [SerializeField] private float _extraDistance = 2f;
     private float _horizontalInput;
     private bool _isFacingRight = true;
     private Vector2 _direction;
     private Platform _targetPlatform;
+
+    [Header("Other")]
+    public GameObject UpPointer, RightPointer, DownPointer, LeftPointer;
 
     #endregion
 
@@ -72,6 +74,10 @@ public class PlayerController : MonoBehaviour
                 Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x, 0), Vector2.up * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
 
                 Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x, _boxCollider.bounds.extents.y + _extraDistance), Vector2.left * (_boxCollider.bounds.extents.x + 0.5f), Color.blue);
+                UpPointer.SetActive(true);
+                RightPointer.SetActive(false);
+                DownPointer.SetActive(false);
+                LeftPointer.SetActive(false);
                 break;
             
             case Vector2 v when v.Equals(Vector2.right):
@@ -80,6 +86,10 @@ public class PlayerController : MonoBehaviour
                 Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x - 0.5f, -0.5f), Vector2.right * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
 
                 Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x + _extraDistance, 0.5f), Vector2.down * (_boxCollider.bounds.extents.y + 0.5f), Color.blue);
+                UpPointer.SetActive(false);
+                RightPointer.SetActive(true);
+                DownPointer.SetActive(false);
+                LeftPointer.SetActive(false);
                 break;
             
             case Vector2 v when v.Equals(Vector2.down):
@@ -88,6 +98,10 @@ public class PlayerController : MonoBehaviour
                 Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x, 0), Vector2.down * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
 
                 Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x, _boxCollider.bounds.extents.y + _extraDistance), Vector2.right * (_boxCollider.bounds.extents.x + 0.5f), Color.blue);
+                UpPointer.SetActive(false);
+                RightPointer.SetActive(false);
+                DownPointer.SetActive(true);
+                LeftPointer.SetActive(false);
                 break;
             
             case Vector2 v when v.Equals(Vector2.left):
@@ -96,6 +110,17 @@ public class PlayerController : MonoBehaviour
                 Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x - 0.5f, 0.5f), Vector2.left * (_boxCollider.bounds.extents.y + _extraDistance), Color.blue);
 
                 Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x + _extraDistance, 0.5f), Vector2.up * (_boxCollider.bounds.extents.y + 0.5f), Color.blue);
+                UpPointer.SetActive(false);
+                RightPointer.SetActive(false);
+                DownPointer.SetActive(false);
+                LeftPointer.SetActive(true);
+                break;
+
+            case Vector2 v when v.Equals(Vector2.zero):
+                UpPointer.SetActive(false);
+                RightPointer.SetActive(false);
+                DownPointer.SetActive(false);
+                LeftPointer.SetActive(false);
                 break;
         }
     }
