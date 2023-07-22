@@ -285,7 +285,6 @@ GameObject:
   - component: {fileID: 139654752}
   - component: {fileID: 139654754}
   - component: {fileID: 139654755}
-  - component: {fileID: 139654756}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -419,44 +418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd3901dd713c1f04bab77459b02a73c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rigidBody: {fileID: 139654752}
-  _feetPosition: {fileID: 0}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _boxCollider: {fileID: 139654753}
-  _speed: 7
-  _magneticForce: 12
-  _targetPolarity: 0
-  _extraDistance: 2
+  _canMagnetise: 1
 --- !u!114 &139654755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 139654749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cccae77ea00fb7140abd73566435c163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 139654750}
-  _player: {fileID: 139654756}
-  _idle: {fileID: 854061254, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _upPending: {fileID: 1577985538, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _upNorth: {fileID: 71979024, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _upSouth: {fileID: -813080140, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _rightPending: {fileID: -1023533056, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _rightNorth: {fileID: -1460361660, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _rightSouth: {fileID: 1584343737, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _downPending: {fileID: 486078253, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _downNorth: {fileID: -515795052, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _downSouth: {fileID: -1501467097, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _leftPending: {fileID: -449074488, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _leftNorth: {fileID: 1895019320, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
-  _leftSouth: {fileID: 715328976, guid: 4324726e2c6b8054eb105b3aad9838d8, type: 3}
---- !u!114 &139654756
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -468,9 +431,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b047a896825b0324e95868b0060fb103, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Direction: {x: 0, y: 0}
-  NorthField: 0
-  SouthField: 0
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &338602526
 GameObject:
   m_ObjectHideFlags: 0
