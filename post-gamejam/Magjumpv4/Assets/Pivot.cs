@@ -15,4 +15,8 @@ public class Pivot : MonoBehaviour
         angle = Mathf.Atan2(mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
+
+    public float GetAngle() {
+        return angle;
+    }
 }
