@@ -9,6 +9,10 @@ public class Magbot : MonoBehaviour {
     public BoxCollider2D coll;
     public LayerMask groundLayer;
     bool checkForApex = true;
+    public Vector2 direction;
+
+    float jumpTimeRef;
+    float delayTime = .1f;
 
     private void Update() {
         float angle = pivot.GetAngle();
@@ -23,12 +27,31 @@ public class Magbot : MonoBehaviour {
         else if (angle <= -10 && angle >= -80)      targetDirection = new Vector2(.5f, -.8f);
 
         if (Input.GetMouseButtonDown(1)) {
-            if (IsGrounded()) Repel(); checkForApex = true;
+            if (IsGrounded()) {
+                Repel();
+                checkForApex = true;
+                jumpTimeRef = Time.time;
+            }
+        }
+        else if (Input.GetMouseButtonDown(0)) {
+            if (IsGrounded()) {
+                Attract();
+            }
+        }
+
+        if (Input.GetMouseButtonUp(1) && rb.linearVelocityY > 0) {
+            rb.linearVelocityY = 0;
         }
 
         if (rb.linearVelocityY < .5f && rb.linearVelocityY > -.5f && IsGrounded() == false) {
             if (checkForApex == false) {
                 return;
+            }
+
+            if (Time.time - jumpTimeRef < .3f) {
+                delayTime = .05f;
+            } else {
+                delayTime = .1f;
             }
 
             StartCoroutine(ApexJump());
@@ -40,15 +63,26 @@ public class Magbot : MonoBehaviour {
         rb.linearVelocity = targetDirection * jumpForce * -1;
     }
 
+    private void Attract() {
+        rb.linearVelocity = targetDirection * jumpForce;
+    }
+
     private bool IsGrounded() {
-        RaycastHit2D hit = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0, Vector2.down, .2f, groundLayer);
-        return hit.collider != null;
+        direction = pivot.GetNormalDirection();
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(coll.bounds.center, coll.bounds.size, 0, direction, 2.5f, groundLayer);
+        foreach(RaycastHit2D hit in hits) {
+            if (hit.collider != null) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     private IEnumerator ApexJump() {
         rb.gravityScale = 0;
         rb.linearVelocityY = 0;
-        yield return new WaitForSeconds(.15f);
+        yield return new WaitForSeconds(delayTime);
         rb.gravityScale = 1;
     }
 }
