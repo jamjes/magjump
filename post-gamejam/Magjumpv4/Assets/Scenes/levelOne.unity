@@ -307,6 +307,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 810697298985837010, guid: 28c832666dd8b9548813784c135f1599, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 2035340237}
     - target: {fileID: 3252375466500847777, guid: 28c832666dd8b9548813784c135f1599, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4
@@ -867,7 +871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   started: 0
-  duration: 0
+  duration: 0.125
   intensity:
     serializedVersion: 2
     m_Curve:
