@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WinCondition : MonoBehaviour
 {
@@ -13,9 +15,14 @@ public class WinCondition : MonoBehaviour
 
         foreach (RaycastHit2D hit in hits) {
             if (hit.collider.tag == "Player") {
-                Debug.Log("Win Condition has been met!");
+                StartCoroutine(SceneAfterDelay());
                 return;
             }
         }
+    }
+
+    IEnumerator SceneAfterDelay() {
+        yield return new WaitForSeconds(.5f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
